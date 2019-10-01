@@ -40,7 +40,7 @@ client.on("message", async message => {
   }
   
   if(command === "kick") {
-    if(!message.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)) )
+    if(!message.member.hasPermission("KICK_MEMBERS"))
       return message.reply("Sorry, you don't have permissions to use this!");  
     let member = message.mentions.members.first() || message.guild.members.get(args[0]);
     if(!member)
@@ -57,7 +57,7 @@ client.on("message", async message => {
   }
   
   if(command === "ban") {
-    if(!message.member.roles.some(r=>["Administrator"].includes(r.name)) )
+    if(!message.member.hasPermission("BAN_MEMBERS"))
       return message.reply("Sorry, you don't have permissions to use this!");
     
     let member = message.mentions.members.first();
@@ -75,6 +75,7 @@ client.on("message", async message => {
   }
   
   if(command === "purge") {
+	 if(!message.member.hasPermission("MANAGE_MESSAGES")) return message.reply("Sorry, you don't have permissions to use this!"); 
      const deleteCount = parseInt(args[0], 10);
     
     if(!deleteCount || deleteCount < 2 || deleteCount > 100)
